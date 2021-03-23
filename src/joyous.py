@@ -21,12 +21,36 @@ class Joyous(object):
     def __init__(self, arguments):
         self.in_file_name = arguments.in_file_name
         self.out_file_name = arguments.out_file_name
+        self.capture = None
 
     def run(self):
         if path.exists(self.in_file_name):
             self.capture = rdpcap(self.in_file_name)
         else:
-            print('error')
+            print(f'Failure - {self.in_file_name} does not exist.')
+            sys.exit(0)
+        for packet in self.capture:
+            try:
+                print(f'IP: {packet[IP].src}:{packet[IP].sport} '
+                      f'-> {packet[IP].dst}:{packet[IP].dport}')
+                print(self.dump_to_python(packet[IP].payload))
+            except IndexError as e:
+                print(f'Packet not supporting IP Layer: {e}.')
+                continue
+
+    def dump_to_python(self, data):
+        data = bytes(data)
+        out_string = "data = ["
+        counter = 0
+        for byte in data:
+            if counter == 8:
+                counter = 0
+                out_string += '\n        '
+            out_string += f'0x{byte:02x},'
+            counter += 1
+        out_string = out_string[:-1]
+        out_string += "]\n"
+        return out_string
 
 
 def main(arguments):
@@ -36,9 +60,8 @@ def main(arguments):
     parser.add_option('-i', '--input', dest='in_file_name',
                       help='Input file name')
     (options, args) = parser.parse_args(arguments)
-    print(f'Type: {options}')
     if options.out_file_name is None or options.in_file_name is None:
-        print("Um - failure...")
+        print('Failure - missing or improper arguments.')
     else:
         translator = Joyous(options)
         translator.run()
