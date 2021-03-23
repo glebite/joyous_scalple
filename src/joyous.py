@@ -31,18 +31,22 @@ class Joyous(object):
             sys.exit(0)
         for packet in self.capture:
             try:
-                print(f'IP: {packet[IP].src}:{packet[IP].sport} '
-                      f'-> {packet[IP].dst}:{packet[IP].dport}')
-                print(self.dump_to_python(packet[IP].payload))
+                info = self.dump_to_python(packet[IP].payload)
+                if info:
+                    print(f'IP: {packet[IP].src}:{packet[IP].sport} '
+                          f'-> {packet[IP].dst}:{packet[IP].dport}')
+                    print(info)
             except IndexError as e:
                 print(f'Packet not supporting IP Layer: {e}.')
                 continue
 
     def dump_to_python(self, data):
+        if len(data) <= 32:
+            return None
         data = bytes(data)
         out_string = "data = ["
         counter = 0
-        for byte in data:
+        for byte in data[32:]:
             if counter == 8:
                 counter = 0
                 out_string += '\n        '
