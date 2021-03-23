@@ -11,8 +11,9 @@ Output should be something along the lines of:
 # IP dport 6000
 data = bytes([0xa9, 0x03, 0x00 ...])
 """
-import scapy
+from scapy.all import *
 import sys
+from os import path
 from optparse import OptionParser
 
 
@@ -21,16 +22,26 @@ class Joyous(object):
         self.in_file_name = arguments.in_file_name
         self.out_file_name = arguments.out_file_name
 
+    def run(self):
+        if path.exists(self.in_file_name):
+            self.capture = rdpcap(self.in_file_name)
+        else:
+            print('error')
+
 
 def main(arguments):
     parser = OptionParser()
     parser.add_option('-o', '--output', dest='out_file_name',
-                      default=False, help='Output file name')
+                      help='Output file name')
     parser.add_option('-i', '--input', dest='in_file_name',
-                      default=False, help='Input file name')
+                      help='Input file name')
     (options, args) = parser.parse_args(arguments)
-    translator = Joyous(options)
-    translator.run()
+    print(f'Type: {options}')
+    if options.out_file_name is None or options.in_file_name is None:
+        print("Um - failure...")
+    else:
+        translator = Joyous(options)
+        translator.run()
 
 
 if __name__ == "__main__":
