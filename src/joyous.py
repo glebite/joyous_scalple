@@ -11,7 +11,9 @@ Output should be something along the lines of:
 # IP dport 6000
 data = bytes([0xa9, 0x03, 0x00 ...])
 """
-from scapy.all import *
+import scapy.all.rdcap as rdcap
+import scapy.all.IP as IP
+
 import sys
 from os import path
 from optparse import OptionParser
@@ -25,7 +27,7 @@ class Joyous(object):
 
     def run(self):
         if path.exists(self.in_file_name):
-            self.capture = rdpcap(self.in_file_name)
+            self.capture = rdcap(self.in_file_name)
         else:
             print(f'Failure - {self.in_file_name} does not exist.')
             sys.exit(0)
