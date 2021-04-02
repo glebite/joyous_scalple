@@ -43,6 +43,11 @@ class Joyous(object):
                 continue
 
     def dump_to_python(self, data):
+        """dump_to_python - dump packet to python list
+
+        :param:  data - the packet data (bytes)
+        :return: out_string - the string output of python list
+        """
         if len(data) <= 32:
             return None
         data = bytes(data)
@@ -60,6 +65,11 @@ class Joyous(object):
 
 
 def main(arguments):
+    """main - main function
+
+    :param:  arguments - straight up from sys.argv
+    :return: None
+    """
     parser = OptionParser()
     parser.add_option('-o', '--output', dest='out_file_name',
                       help='Output file name')
