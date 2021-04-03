@@ -21,11 +21,21 @@ from optparse import OptionParser
 
 class Joyous(object):
     def __init__(self, arguments):
+        """__init__ - init the class
+
+        :param:  arguments - passed in from main and arg parsing
+        :return: None
+        """
         self.in_file_name = arguments.in_file_name
         self.out_file_name = arguments.out_file_name
         self.capture = None
 
     def run(self):
+        """run - execute the overall flow of the code
+
+        :param:  None
+        :return: None
+        """
         if path.exists(self.in_file_name):
             self.capture = rdcap(self.in_file_name)
         else:
