@@ -20,6 +20,8 @@ from optparse import OptionParser
 
 
 class Joyous(object):
+    """Joyous
+    """
     def __init__(self, arguments):
         """__init__ - init the class
 
