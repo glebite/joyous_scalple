@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 joyous.py - pcap to python bytes output
 
