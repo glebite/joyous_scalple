@@ -12,9 +12,9 @@ Output should be something along the lines of:
 # IP dport 6000
 data = bytes([0xa9, 0x03, 0x00 ...])
 """
-from scapy.all import *
-# from scapy.layers.inet import IP
-# import scapy.rdcap as rdcap
+from scapy.all import rdpcap
+from scapy.layers.inet import IP
+
 import sys
 from os import path
 from optparse import OptionParser
@@ -40,7 +40,7 @@ class Joyous(object):
         :return: None
         """
         if path.exists(self.in_file_name):
-            self.capture = rdcap(self.in_file_name)
+            self.capture = rdpcap(self.in_file_name)
         else:
             print(f'# Failure - {self.in_file_name} does not exist.')
             sys.exit(0)
