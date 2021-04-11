@@ -68,13 +68,11 @@ class Joyous(object):
             return None
         data = bytes(data)
         out_string = f'{var_name} = ['
-        counter = 0
-        for byte in data[HEADER:]:
+        for counter, byte in enumerate(data[HEADER:]):
             mod_check = (counter % 8 == 0) and counter > 0
             if mod_check:
                 out_string += '\n        '
             out_string += f'0x{byte:02x},'
-            counter += 1
         out_string = out_string[:-1]
         out_string += ']\n'
         return out_string
