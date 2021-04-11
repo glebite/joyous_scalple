@@ -12,10 +12,9 @@ Output should be something along the lines of:
 # IP dport 6000
 data = bytes([0xa9, 0x03, 0x00 ...])
 """
-import scapy.all
-import scapy.all.rdcap as rdcap
-import scapy.all.IP as IP
-
+from scapy.all import *
+# from scapy.layers.inet import IP
+# import scapy.rdcap as rdcap
 import sys
 from os import path
 from optparse import OptionParser
