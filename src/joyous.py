@@ -94,6 +94,8 @@ def main(arguments):
     (options, args) = parser.parse_args(arguments)
     if options.out_file_name is None or options.in_file_name is None:
         print('# Failure - missing or improper arguments.')
+    elif options.out_file_name == "joyous.py":
+        print('Error - not running and erasing the source code.')
     else:
         translator = Joyous(options)
         translator.run()
