@@ -19,6 +19,8 @@ import sys
 from os import path
 from optparse import OptionParser
 
+HEADER = 32
+
 
 class Joyous(object):
     """Joyous
@@ -50,30 +52,31 @@ class Joyous(object):
                 if info:
                     print(f'# IP: {packet[IP].src}:{packet[IP].sport} '
                           f'# -> {packet[IP].dst}:{packet[IP].dport}')
+                    print(f'# length: 0x{len(packet[IP].payload)-HEADER:04x}')
                     print(info)
-            except IndexError as e:
-                print(f'# Packet not supporting IP Layer: {e}.')
+            except IndexError as exception:
+                print(f'# Packet not supporting IP Layer: {exception}.')
                 continue
 
-    def dump_to_python(self, data):
+    def dump_to_python(self, data, var_name='data'):
         """dump_to_python - dump packet to python list
 
         :param:  data - the packet data (bytes)
         :return: out_string - the string output of python list
         """
-        if len(data) <= 32:
+        if len(data) <= HEADER:
             return None
         data = bytes(data)
-        out_string = "data = ["
+        out_string = f'{var_name} = ['
         counter = 0
-        for byte in data[32:]:
-            if counter == 8:
-                counter = 0
+        for byte in data[HEADER:]:
+            mod_check = (counter % 8 == 0) and counter > 0
+            if mod_check:
                 out_string += '\n        '
             out_string += f'0x{byte:02x},'
             counter += 1
         out_string = out_string[:-1]
-        out_string += "]\n"
+        out_string += ']\n'
         return out_string
 
 
@@ -96,5 +99,5 @@ def main(arguments):
         translator.run()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main(sys.argv)
