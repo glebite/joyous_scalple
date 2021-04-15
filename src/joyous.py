@@ -14,11 +14,11 @@ data = bytes([0xa9, 0x03, 0x00 ...])
 """
 from scapy.all import rdpcap
 from scapy.layers.inet import IP
-
 import sys
 from os import path
 from optparse import OptionParser
 
+# header offset
 HEADER = 32
 
 
