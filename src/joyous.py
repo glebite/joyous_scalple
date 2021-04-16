@@ -45,18 +45,23 @@ class Joyous(object):
         if path.exists(self.in_file_name):
             self.capture = rdpcap(self.in_file_name)
         else:
-            self.out_handler.write(f'# Failure - {self.in_file_name} does not exist.')
+            self.out_handler.write(f'# Failure - {self.in_file_name}'
+                                   ' does not exist.')
             sys.exit(0)
         for packet in self.capture:
             try:
                 info = self.dump_to_python(packet[IP].payload)
                 if info:
-                    self.out_handler.write(f'# IP: {packet[IP].src}:{packet[IP].sport} '
-                          f'# -> {packet[IP].dst}:{packet[IP].dport}\n')
-                    self.out_handler.write(f'# length: 0x{len(packet[IP].payload)-HEADER:04x}\n')
+                    self.out_handler.write(f'# IP: {packet[IP].src}:'
+                                           f'{packet[IP].sport} '
+                                           f'# -> {packet[IP].dst}'
+                                           f':{packet[IP].dport}\n')
+                    self.out_handler.write(f'# length: '
+                                           f'0x{len(packet[IP].payload)-HEADER:04x}\n')
                     self.out_handler.write(info)
             except IndexError as exception:
-                self.out_handler.write(f'# Packet not supporting IP Layer: {exception}.\n')
+                self.out_handler.write(f'# Packet not supporting'
+                                       f' IP Layer: {exception}.\n')
                 continue
         self.out_handler.close()
 
@@ -93,9 +98,9 @@ def main(arguments):
                       help='Input file name')
     (options, args) = parser.parse_args(arguments)
     if options.out_file_name is None or options.in_file_name is None:
-        self.out_handler.write('# Failure - missing or improper arguments.')
+        print('# Failure - missing or improper arguments.')
     elif options.out_file_name == "joyous.py":
-        self.out_handler.write('Error - not running and erasing the source code.')
+        print('Error - not running and erasing the source code.')
     else:
         translator = Joyous(options)
         translator.run()
