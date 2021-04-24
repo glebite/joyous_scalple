@@ -45,6 +45,7 @@ class Joyous(object):
         self.out_file_name = arguments.out_file_name
         self.out_handler = open(self.out_file_name, 'w')
         self.capture = None
+        self.output = ""
 
     def run(self):
         """run - execute the overall flow of the code
@@ -59,8 +60,17 @@ class Joyous(object):
                                    ' does not exist.')
             sys.exit(0)
         for packet in self.capture:
-            pass
+            self.get_hosts(packet)
         self.out_handler.close()
+
+    def get_hosts(self, packet):
+        try:
+            self.output = f'{packet[IP].src:15}:{packet[IP].sport:5} '
+            self.output += f'{packet[IP].dst:15}:{packet[IP].dport:5} '
+            print(self.output)
+        except IndexError as exception:
+            self.out_handler.write(f'# Packet not supporting'
+                                   f' IP Layer: {exception}.\n')
 
     def dump_to_python(self, data, var_name='data'):
         """dump_to_python - dump packet to python list
