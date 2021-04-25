@@ -65,7 +65,7 @@ class Joyous(object):
 
     def get_hosts(self, packet):
         try:
-            self.output = f'{packet[IP].src:15}:{packet[IP].sport:5} '
+            self.output = f'{packet[IP].src:15}:{packet[IP].sport:5} -> '
             self.output += f'{packet[IP].dst:15}:{packet[IP].dport:5} '
             print(self.output)
         except IndexError as exception:
