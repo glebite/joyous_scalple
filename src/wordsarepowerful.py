@@ -15,23 +15,6 @@ from optparse import OptionParser
 HEADER = 32
 
 
-# try:
-#     info = self.dump_to_python(packet[IP].payload)
-#     if info:
-#         data = f'0x{len(packet[IP].payload)-HEADER:04x}\n'
-#         self.out_handler.write(f'# IP: {packet[IP].src}:'
-#                                f'{packet[IP].sport} '
-#                                f'# -> {packet[IP].dst}'
-#                                f':{packet[IP].dport}\n')
-#         self.out_handler.write(f'# length: '
-#                                f'{data}')
-#         self.out_handler.write(info)
-# except IndexError as exception:
-#     self.out_handler.write(f'# Packet not supporting'
-#                            f' IP Layer: {exception}.\n')
-#     continue
-
-
 class Joyous(object):
     """Joyous
     """
@@ -111,6 +94,7 @@ def main(arguments):
     else:
         translator = Joyous(options)
         translator.run()
+    return None
 
 
 if __name__ == '__main__':
