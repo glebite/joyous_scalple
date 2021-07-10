@@ -13,6 +13,7 @@ from optparse import OptionParser
 
 # header offset
 HEADER = 32
+COL_WIDTH = 8
 
 
 class Joyous(object):
@@ -66,7 +67,7 @@ class Joyous(object):
         data = bytes(data)
         out_string = f'{var_name} = ['
         for counter, byte in enumerate(data[HEADER:]):
-            mod_check = (counter % 8 == 0) and counter > 0
+            mod_check = (counter % COL_WIDTH == 0) and counter > 0
             if mod_check:
                 out_string += '\n        '
             out_string += f'0x{byte:02x},'
